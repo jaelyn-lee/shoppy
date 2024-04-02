@@ -1,11 +1,19 @@
 import { Link } from 'react-router-dom'
 import { BsBagHeart } from 'react-icons/bs'
-import { login, logout } from '../api/firebase'
-import { useState } from 'react'
+import { login, logout, onUserStateChanged } from '../api/firebase'
+import { useEffect, useState } from 'react'
 import { User } from '../types/user'
 
 export default function NavBar() {
   const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    onUserStateChanged((user: User) => {
+      console.log(user)
+      setUser(user)
+    })
+  }, [])
+
   const handleLogin = () => {
     login().then((user: User) => setUser(user))
   }
@@ -31,7 +39,7 @@ export default function NavBar() {
           <button onClick={handleLogin}>Login</button>
         ) : (
           <>
-            <img src={user.photoURL} alt="user photo" />
+            <img src={user.photoURL} alt="user photo" className="w-10" />
             <p>{user.displayName}</p>
             <button onClick={handleLogout}>Logout</button>
           </>
