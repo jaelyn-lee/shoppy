@@ -5,9 +5,9 @@ export default {
     extend: {
       colors: {
         main: '#668C3F',
-        secondary: '728C58',
-        tertiary: '93A680',
-        lightGreen: 'B4BFA3',
+        secondary: '#728C58',
+        tertiary: '#93A680',
+        lightGreen: '#B4BFA3',
         background: '#F2EAE4',
       },
     },

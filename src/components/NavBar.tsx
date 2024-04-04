@@ -3,6 +3,7 @@ import { BsBagHeart } from 'react-icons/bs'
 import { login, logout, onUserStateChanged } from '../api/firebase'
 import { useEffect, useState } from 'react'
 import { User } from '../types/user'
+import Button from '../ui/button'
 
 export default function NavBar() {
   const [user, setUser] = useState<User | null>(null)
@@ -28,7 +29,7 @@ export default function NavBar() {
         {user ? <Link to={'/carts'}>Cart</Link> : null}
         {user && user.isAdmin ? <Link to={'/products/new'}>Edit</Link> : null}
         {!user ? (
-          <button onClick={login}>Login</button>
+          <Button onClick={login} text="Login" />
         ) : (
           <>
             <img
@@ -37,7 +38,7 @@ export default function NavBar() {
               className="w-10 h-10 rounded-full mr-2"
             />
             <span className="hidden md:block">{user.displayName}</span>
-            <button onClick={logout}>Logout</button>
+            <Button onClick={logout} text="Logout" />
           </>
         )}
       </nav>
