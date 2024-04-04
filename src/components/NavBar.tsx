@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { BsBagHeart } from 'react-icons/bs'
-import Button from '../ui/button'
+import Button from '../ui/Button'
 import { useAuthContext } from './context/AuthContext'
 
 export default function NavBar() {

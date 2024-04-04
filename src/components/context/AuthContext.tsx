@@ -1,10 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { login, logout, onUserStateChanged } from '../../api/firebase'
-import { User } from 'firebase/auth'
-
+import { User } from '../../types/user'
 const AuthContext = createContext()
 
-export function AuthContextProvider({ children }) {
+export function AuthContextProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {

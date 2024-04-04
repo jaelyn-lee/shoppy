@@ -6,8 +6,9 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { getDatabase, ref, get } from 'firebase/database'
+import { getDatabase, ref, get, set } from 'firebase/database'
 import { User } from '../types/user'
+import { Product } from '../types/product'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
@@ -19,7 +20,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const provider = new GoogleAuthProvider()
-const database = getDatabase(app)
+const db = getDatabase(app)
 
 export function login() {
   signInWithPopup(auth, provider).catch(console.error)
@@ -38,12 +39,30 @@ export function onUserStateChanged(callback) {
 }
 
 async function adminUser(user: User) {
-  return get(ref(database, 'admins')).then((snapshot) => {
+  return get(ref(db, 'admins')).then((snapshot) => {
     if (snapshot.exists()) {
       const admins = snapshot.val()
       const isAdmin = admins.includes(user.uid)
+      console.log({ ...user, isAdmin })
+
       return { ...user, isAdmin }
     }
     return user
+  })
+}
+
+export function addNewProduct({
+  productName,
+  price,
+  category,
+  productDescription,
+  option,
+}: Product) {
+  set(ref(db, 'products/'), {
+    productName,
+    price,
+    category,
+    productDescription,
+    option,
   })
 }
