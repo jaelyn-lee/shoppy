@@ -6,11 +6,9 @@ import { User } from '../types/user'
 
 export default function NavBar() {
   const [user, setUser] = useState<User | null>(null)
-  const admin = import.meta.env.VITE_ADMIN_UID
 
   useEffect(() => {
-    onUserStateChanged((user) => {
-      console.log(user)
+    onUserStateChanged((user: User) => {
       setUser(user)
     })
   }, [])
@@ -28,9 +26,7 @@ export default function NavBar() {
       <nav className="flex items-center gap-4">
         <Link to={'/products'}>Products</Link>
         {user ? <Link to={'/carts'}>Cart</Link> : null}
-        {user && admin === user.uid ? (
-          <Link to={'/products/new'}>Edit</Link>
-        ) : null}
+        {user && user.isAdmin ? <Link to={'/products/new'}>Edit</Link> : null}
         {!user ? (
           <button onClick={login}>Login</button>
         ) : (
