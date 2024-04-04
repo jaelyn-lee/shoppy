@@ -9,7 +9,10 @@ export default function NavBar() {
   const admin = import.meta.env.VITE_ADMIN_UID
 
   useEffect(() => {
-    onUserStateChanged(setUser)
+    onUserStateChanged((user) => {
+      console.log(user)
+      setUser(user)
+    })
   }, [])
 
   return (
