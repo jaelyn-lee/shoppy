@@ -6,7 +6,7 @@ export default function button({ text, onClick }: Button) {
   return (
     <button
       onClick={onClick}
-      className="border-2 bg-tertiary border-tertiary text-white rounded-xl px-3 py-1"
+      className="bg-main text-white rounded-xl px-4 py-2 hover:brightness-110"
     >
       {text}
     </button>
