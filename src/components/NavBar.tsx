@@ -6,20 +6,11 @@ import { User } from '../types/user'
 
 export default function NavBar() {
   const [user, setUser] = useState<User | null>(null)
+  const admin = import.meta.env.VITE_ADMIN_UID
 
   useEffect(() => {
-    onUserStateChanged((user: User) => {
-      console.log(user)
-      setUser(user)
-    })
+    onUserStateChanged(setUser)
   }, [])
-
-  const handleLogin = () => {
-    login().then((user: User) => setUser(user))
-  }
-  const handleLogout = () => {
-    logout().then(setUser(null))
-  }
 
   return (
     <header className="flex justify-between border-b border-grey-300 p-2">
@@ -33,15 +24,21 @@ export default function NavBar() {
 
       <nav className="flex items-center gap-4">
         <Link to={'/products'}>Products</Link>
-        <Link to={'/carts'}>Cart</Link>
-        <Link to={'/products/new'}>Edit</Link>
+        {user ? <Link to={'/carts'}>Cart</Link> : null}
+        {user && admin === user.uid ? (
+          <Link to={'/products/new'}>Edit</Link>
+        ) : null}
         {!user ? (
-          <button onClick={handleLogin}>Login</button>
+          <button onClick={login}>Login</button>
         ) : (
           <>
-            <img src={user.photoURL} alt="user photo" className="w-10" />
-            <p>{user.displayName}</p>
-            <button onClick={handleLogout}>Logout</button>
+            <img
+              src={user.photoURL}
+              alt="user photo"
+              className="w-10 h-10 rounded-full mr-2"
+            />
+            <span className="hidden md:block">{user.displayName}</span>
+            <button onClick={logout}>Logout</button>
           </>
         )}
       </nav>
