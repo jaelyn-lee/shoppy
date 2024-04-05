@@ -6,7 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { getDatabase, ref, get, set } from 'firebase/database'
+import { getDatabase, ref, get, set, push } from 'firebase/database'
 import { User } from '../types/user'
 import { Product } from '../types/product'
 
@@ -52,17 +52,23 @@ async function adminUser(user: User) {
 }
 
 export function addNewProduct({
+  productId,
   productName,
   price,
   category,
   productDescription,
   option,
 }: Product) {
-  set(ref(db, 'products/'), {
+  const newProductRef = push(ref(db, 'products/productId'))
+  set(newProductRef, {
     productName,
     price,
     category,
     productDescription,
     option,
   })
+    .then(() => {
+      alert('Data saved successfully! 🎉')
+    })
+    .catch(console.error)
 }

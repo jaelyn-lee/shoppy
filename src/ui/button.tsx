@@ -1,6 +1,6 @@
 type Button = {
   text: string
-  onClick: React.MouseEventHandler<HTMLButtonElement>
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
   type?: 'submit'
 }
 export default function Button({ text, onClick, type }: Button) {

@@ -12,8 +12,10 @@ export default function NewProduct() {
     option: '',
   }
   const [product, setProduct] = useState<Product>(initialProduct)
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const [file, setFile] = useState<File | null>(null)
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    //Upload product image to Cloudinary and get URL
     //Add new product to firebase
     try {
       await addNewProduct(product)
@@ -25,28 +27,41 @@ export default function NewProduct() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newProduct = { ...product, [e.target.name]: e.target.value }
+    //DOC: File이라는 key를 가진 input이 있을 경우, files를 업데이트하고 setProduct를 업데이트하지 못하도록 return 해줌
+    if (e.target.name === 'file') {
+      setFile(e.target.files && e.target.files[0])
+      return
+    }
     setProduct(newProduct)
-    setProduct(initialProduct)
     console.log('new product!: ', product)
   }
   return (
     <section className="flex flex-col items-center justify-center mt-20">
       <h1 className="text-2xl font-semibold">Add new product</h1>
-      <form>
+      {file && (
+        <img
+          src={URL.createObjectURL(file)}
+          alt="product"
+          className="h-80 my-4"
+        />
+      )}
+      <form onSubmit={handleSubmit}>
         <div>
-          <button>Choose file</button>
           <input
-            type="text"
-            name=""
+            type="file"
+            accept="image/*"
+            name="file"
+            required
             onChange={handleChange}
-            placeholder="no file added"
           />
         </div>
         <div>
           <input
             type="text"
-            name="product-name"
+            name="productName"
+            value={product.productName ?? ''}
             placeholder="Product name"
+            required
             onChange={handleChange}
           />
         </div>
@@ -57,15 +72,19 @@ export default function NewProduct() {
           <input
             type="text"
             name="category"
+            value={product.category ?? ''}
             placeholder="Category"
+            required
             onChange={handleChange}
           />
         </div>
         <div>
           <input
             type="text"
-            name="product-description"
+            name="productDescription"
+            value={product.productDescription ?? ''}
             placeholder="Product Description"
+            required
             onChange={handleChange}
           />
         </div>
@@ -73,11 +92,13 @@ export default function NewProduct() {
           <input
             type="text"
             name="option"
+            value={product.option ?? ''}
             placeholder="Option"
+            required
             onChange={handleChange}
           />
         </div>
-        <Button text="Add New Product" type="submit" onClick={handleSubmit} />
+        <Button text="Add New Product" type="submit" />
       </form>
     </section>
   )
