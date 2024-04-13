@@ -13,18 +13,20 @@ export default function NewProduct() {
     option: '',
   }
   const [product, setProduct] = useState<Product>(initialProduct)
-  const [file, setFile] = useState<File | null>(null)
+  const [file, setFile] = useState<object | null>(null)
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     //Upload product image to Cloudinary and get URL
-    uploadImage(file).then((url) => console.log(url))
-    //Add new product to firebase
-    try {
-      await addNewProduct(product)
-      console.log('New product is successfully added to firebase DB.')
-    } catch (error) {
-      console.log(error)
-    }
+    uploadImage(file).then((url) => {
+      console.log(url)
+      //Add new product to firebase
+      try {
+        addNewProduct(product, url)
+        console.log('New product is successfully added to firebase DB.')
+      } catch (error) {
+        console.log(error)
+      }
+    })
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

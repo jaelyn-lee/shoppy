@@ -9,6 +9,7 @@ import {
 import { getDatabase, ref, get, set, push } from 'firebase/database'
 import { User } from '../types/user'
 import { Product } from '../types/product'
+import { v4 as uuid } from 'uuid'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
@@ -51,21 +52,15 @@ async function adminUser(user: User) {
   })
 }
 
-export function addNewProduct({
-  productId,
-  productName,
-  price,
-  category,
-  productDescription,
-  option,
-}: Product) {
-  const newProductRef = push(ref(db, 'products/productId'))
+export async function addNewProduct(product: Product, imageUrl: string) {
+  const id = uuid()
+  const newProductRef = ref(db, `products/${id}`)
   set(newProductRef, {
-    productName,
-    price,
-    category,
-    productDescription,
-    option,
+    ...product,
+    id,
+    price: product.price,
+    image: imageUrl,
+    options: product.option.split(','),
   })
     .then(() => {
       alert('Data saved successfully! 🎉')
