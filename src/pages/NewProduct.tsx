@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Product } from '../types/product'
 import Button from '../ui/Button'
 import { addNewProduct } from '../api/firebase'
+import { uploadImage } from '../api/cloudinary'
 
 export default function NewProduct() {
   const initialProduct = {
@@ -16,6 +17,7 @@ export default function NewProduct() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     //Upload product image to Cloudinary and get URL
+    uploadImage(file).then((url) => console.log(url))
     //Add new product to firebase
     try {
       await addNewProduct(product)
