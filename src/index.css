@@ -4,6 +4,7 @@
 
 #root {
   @apply w-full max-w-screen-2xl;
+  font-family: 'Raleway', sans-serif;
 }
 
 body {

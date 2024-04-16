@@ -1,6 +1,7 @@
 type Button = {
-  text: string
+  text: string | boolean
   onClick?: React.MouseEventHandler<HTMLButtonElement>
+  disabled?: boolean
   type?: 'submit'
 }
 export default function Button({ text, onClick, type }: Button) {

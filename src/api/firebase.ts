@@ -55,7 +55,7 @@ async function adminUser(user: User) {
 export async function addNewProduct(product: Product, imageUrl: string) {
   const id = uuid()
   const newProductRef = ref(db, `products/${id}`)
-  set(newProductRef, {
+  return set(newProductRef, {
     ...product,
     id,
     price: product.price,
@@ -63,7 +63,7 @@ export async function addNewProduct(product: Product, imageUrl: string) {
     options: product.option.split(','),
   })
     .then(() => {
-      alert('Data saved successfully! 🎉')
+      console.log('Data saved successfully! 🎉')
     })
     .catch(console.error)
 }

@@ -11,9 +11,6 @@ export const cld = new Cloudinary({
 export async function uploadImage(file: object | null) {
   const data = new FormData()
   data.append('file', file)
-  console.log('File is here:', file)
-  console.log('File type: ', typeof file)
-
   data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_PRESET)
   return fetch(import.meta.env.VITE_CLOUDINARY_URL, {
     method: 'POST',

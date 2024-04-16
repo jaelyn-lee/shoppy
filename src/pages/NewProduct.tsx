@@ -14,19 +14,30 @@ export default function NewProduct() {
   }
   const [product, setProduct] = useState<Product>(initialProduct)
   const [file, setFile] = useState<object | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [success, setSuccess] = useState<string | null>(null)
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    //Disabled button to show users the file is uploading
+    setIsUploading(true)
     //Upload product image to Cloudinary and get URL
-    uploadImage(file).then((url) => {
-      console.log(url)
-      //Add new product to firebase
-      try {
-        addNewProduct(product, url)
-        console.log('New product is successfully added to firebase DB.')
-      } catch (error) {
-        console.log(error)
-      }
-    })
+    uploadImage(file)
+      .then((url) => {
+        //Add new product to firebase
+        addNewProduct(product, url).then(() => {
+          //Show success message for 4 seconds
+          setSuccess('New product added successfully.')
+          setTimeout(() => {
+            setSuccess(null)
+          }, 4000)
+        })
+      })
+      .finally(() => {
+        setIsUploading(false)
+        setProduct(initialProduct)
+        setFile(null)
+      })
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,11 +48,11 @@ export default function NewProduct() {
       return
     }
     setProduct(newProduct)
-    console.log('new product!: ', product)
   }
   return (
-    <section className="flex flex-col items-center justify-center mt-20">
-      <h1 className="text-2xl font-semibold">Add new product</h1>
+    <section className="flex flex-col items-center justify-center mt-16">
+      <h1 className="text-2xl font-bold mb-4">Add new product</h1>
+      {success && <p>✅ {success}</p>}
       {file && (
         <img
           src={URL.createObjectURL(file)}
@@ -49,17 +60,19 @@ export default function NewProduct() {
           className="h-80 my-4"
         />
       )}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="file"
-            accept="image/*"
-            name="file"
-            required
-            onChange={handleChange}
-          />
-        </div>
-        <div>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center">
+        <input
+          type="file"
+          accept="image/*"
+          name="file"
+          required
+          onChange={handleChange}
+          className="w-[288px] mb-4"
+        />
+        <div className="flex flex-col mb-4">
+          <label htmlFor="productName" className="mb-2">
+            Product Name
+          </label>
           <input
             type="text"
             name="productName"
@@ -67,12 +80,26 @@ export default function NewProduct() {
             placeholder="Product name"
             required
             onChange={handleChange}
+            className="border-4 border-main rounded-md w-72"
           />
         </div>
-        <div>
-          <input type="number" name="price" placeholder="Price" />
+        <div className="flex flex-col mb-4">
+          <label htmlFor="price" className="mb-2">
+            Price
+          </label>
+          <input
+            type="number"
+            name="price"
+            placeholder="Price"
+            required
+            onChange={handleChange}
+            className="border-4 border-main rounded-md w-72"
+          />
         </div>
-        <div>
+        <div className="flex flex-col mb-4">
+          <label htmlFor="category" className="mb-2">
+            Category
+          </label>
           <input
             type="text"
             name="category"
@@ -80,9 +107,13 @@ export default function NewProduct() {
             placeholder="Category"
             required
             onChange={handleChange}
+            className="border-4 border-main rounded-md w-72"
           />
         </div>
-        <div>
+        <div className="flex flex-col mb-4">
+          <label htmlFor="productDescription" className="mb-2">
+            Product Description
+          </label>
           <input
             type="text"
             name="productDescription"
@@ -90,19 +121,30 @@ export default function NewProduct() {
             placeholder="Product Description"
             required
             onChange={handleChange}
+            className="border-4 border-main rounded-md w-72"
           />
         </div>
-        <div>
+        <div className="flex flex-col mb-4">
+          <label htmlFor="option" className="mb-2">
+            Option
+          </label>
           <input
             type="text"
             name="option"
             value={product.option ?? ''}
-            placeholder="Option"
+            placeholder="Add comma (,) in between options."
             required
             onChange={handleChange}
+            className="border-4 border-main rounded-md w-72"
           />
         </div>
-        <Button text="Add New Product" type="submit" />
+        <div className="flex justify-center mt-4">
+          <Button
+            text={isUploading ? 'Uploading...' : 'Upload file'}
+            type="submit"
+            disabled={isUploading}
+          />
+        </div>
       </form>
     </section>
   )
