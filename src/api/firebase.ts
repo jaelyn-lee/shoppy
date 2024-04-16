@@ -6,7 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { getDatabase, ref, get, set, push } from 'firebase/database'
+import { getDatabase, ref, get, set, onValue } from 'firebase/database'
 import { User } from '../types/user'
 import { Product } from '../types/product'
 import { v4 as uuid } from 'uuid'
@@ -60,10 +60,21 @@ export async function addNewProduct(product: Product, imageUrl: string) {
     id,
     price: product.price,
     image: imageUrl,
-    options: product.option.split(','),
+    options: product.options.split(','),
   })
     .then(() => {
       console.log('Data saved successfully! 🎉')
     })
     .catch(console.error)
+}
+
+export async function getAllProducts() {
+  const productsRef = ref(db, 'products')
+  return onValue(productsRef, (snapshot) => {
+    if (snapshot.exists()) {
+      const products = snapshot.val()
+      console.log(products)
+      return Object.values(products)
+    }
+  })
 }

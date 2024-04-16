@@ -10,7 +10,7 @@ export default function NewProduct() {
     price: 0,
     category: '',
     productDescription: '',
-    option: '',
+    options: '',
   }
   const [product, setProduct] = useState<Product>(initialProduct)
   const [file, setFile] = useState<object | null>(null)
@@ -80,7 +80,7 @@ export default function NewProduct() {
             placeholder="Product name"
             required
             onChange={handleChange}
-            className="border-4 border-main rounded-md w-72"
+            className="border-4 border-main rounded-md w-72 p-1"
           />
         </div>
         <div className="flex flex-col mb-4">
@@ -93,7 +93,7 @@ export default function NewProduct() {
             placeholder="Price"
             required
             onChange={handleChange}
-            className="border-4 border-main rounded-md w-72"
+            className="border-4 border-main rounded-md w-72 p-1"
           />
         </div>
         <div className="flex flex-col mb-4">
@@ -107,7 +107,7 @@ export default function NewProduct() {
             placeholder="Category"
             required
             onChange={handleChange}
-            className="border-4 border-main rounded-md w-72"
+            className="border-4 border-main rounded-md w-72 p-1"
           />
         </div>
         <div className="flex flex-col mb-4">
@@ -121,21 +121,21 @@ export default function NewProduct() {
             placeholder="Product Description"
             required
             onChange={handleChange}
-            className="border-4 border-main rounded-md w-72"
+            className="border-4 border-main rounded-md w-72 p-1"
           />
         </div>
         <div className="flex flex-col mb-4">
-          <label htmlFor="option" className="mb-2">
+          <label htmlFor="options" className="mb-2">
             Option
           </label>
           <input
             type="text"
-            name="option"
-            value={product.option ?? ''}
+            name="options"
+            value={product.options ?? ''}
             placeholder="Add comma (,) in between options."
             required
             onChange={handleChange}
-            className="border-4 border-main rounded-md w-72"
+            className="border-4 border-main rounded-md w-72 p-1"
           />
         </div>
         <div className="flex justify-center mt-4">
