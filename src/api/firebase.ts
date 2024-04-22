@@ -6,7 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { getDatabase, ref, get, set, onValue } from 'firebase/database'
+import { getDatabase, ref, get, set } from 'firebase/database'
 import { User } from '../types/user'
 import { Product } from '../types/product'
 import { v4 as uuid } from 'uuid'
@@ -44,7 +44,6 @@ async function adminUser(user: User) {
     if (snapshot.exists()) {
       const admins = snapshot.val()
       const isAdmin = admins.includes(user.uid)
-      console.log({ ...user, isAdmin })
 
       return { ...user, isAdmin }
     }
@@ -69,12 +68,12 @@ export async function addNewProduct(product: Product, imageUrl: string) {
 }
 
 export async function getAllProducts() {
-  const productsRef = ref(db, 'products')
-  return onValue(productsRef, (snapshot) => {
+  return get(ref(db, 'products')).then((snapshot) => {
     if (snapshot.exists()) {
-      const products = snapshot.val()
-      console.log(products)
-      return Object.values(products)
+      return Object.values(snapshot.val())
+    } else {
+      console.log('[Firebase error]: Data is not received.')
+      return []
     }
   })
 }
