@@ -10,6 +10,9 @@ export default {
         lightGreen: '#B4BFA3',
         background: '#F2EAE4',
       },
+      backgroundImage: {
+        banner: "url('/public/banner-image.jpg')",
+      },
     },
   },
   plugins: [],

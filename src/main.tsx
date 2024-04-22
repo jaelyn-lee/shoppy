@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Home from './pages/Home.tsx'
 import AllProducts from './pages/AllProducts.tsx'
 import NewProduct from './pages/NewProduct.tsx'
@@ -48,9 +47,7 @@ const router = createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <QueryClientProvider client={new QueryClient()}>
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
-  </QueryClientProvider>
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 )

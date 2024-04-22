@@ -1,13 +1,16 @@
 import { Outlet } from 'react-router-dom'
 import NavBar from './components/NavBar'
 import { AuthContextProvider } from './components/context/AuthContext'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 function App() {
   return (
-    <AuthContextProvider>
-      <NavBar />
-      <Outlet />
-    </AuthContextProvider>
+    <QueryClientProvider client={new QueryClient()}>
+      <AuthContextProvider>
+        <NavBar />
+        <Outlet />
+      </AuthContextProvider>
+    </QueryClientProvider>
   )
 }
 
