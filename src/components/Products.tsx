@@ -9,7 +9,6 @@ export default function ProductsList() {
     error,
     data: products,
   } = useQuery<Product[]>({ queryKey: ['products'], queryFn: getAllProducts })
-  console.log(products)
 
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>
