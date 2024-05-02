@@ -5,7 +5,10 @@ import { addItemToCart } from '../api/firebase'
 import { useAuthContext } from '../components/context/AuthContext'
 
 export default function ProductDetails() {
-  const { user } = useAuthContext()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { user }: any = useAuthContext()
+  console.log(user)
+
   const userId = user.uid
 
   const location = useLocation()

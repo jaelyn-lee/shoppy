@@ -6,11 +6,13 @@ import { uploadImage } from '../api/cloudinary'
 
 export default function NewProduct() {
   const initialProduct = {
+    id: '',
+    image: '',
     productName: '',
     price: 0,
     category: '',
     productDescription: '',
-    options: '',
+    options: [],
   }
   const [product, setProduct] = useState<Product>(initialProduct)
   const [file, setFile] = useState<object | null>(null)
