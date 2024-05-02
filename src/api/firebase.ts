@@ -6,7 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { getDatabase, ref, get, set } from 'firebase/database'
+import { getDatabase, ref, get, set, push } from 'firebase/database'
 import { User } from '../types/user'
 import { Product } from '../types/product'
 import { v4 as uuid } from 'uuid'
@@ -76,4 +76,14 @@ export async function getAllProducts() {
       return []
     }
   })
+}
+
+export async function addItemToCart(product: Product, userId: string) {
+  const newItemRef = ref(db, `cart/${userId}`)
+  return push(newItemRef, {
+    ...product,
+    userId,
+  })
+    .then(() => console.log('Item has been added successfully! 🎉'))
+    .catch(console.error)
 }
