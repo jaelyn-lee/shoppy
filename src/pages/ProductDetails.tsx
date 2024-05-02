@@ -13,7 +13,10 @@ export default function ProductDetails() {
   const [selected, setSelected] = useState(
     product.options && product.options[0]
   )
-  const [selectedProduct, setSelectedProduct] = useState(product)
+  const [selectedProduct, setSelectedProduct] = useState({
+    ...product,
+    options: selected,
+  })
   const [success, setSuccess] = useState<string | null>(null)
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault()
@@ -53,6 +56,7 @@ export default function ProductDetails() {
               onChange={handleSelect}
               value={selected}
               className="p-2 m-4 flex-1 border-2 border-dashed border-main outline-none"
+              required
             >
               {product.options &&
                 product.options.map((option: string, index: number) => {
