@@ -29,8 +29,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-center justify-between mb-2 px-2">
           <p className=" text-gray-600">{category}</p>
           <p className=" text-gray-600">
-            {product.options.map((op: string) => (
-              <span>{op} </span>
+            {product.options.map((op: string, index: number) => (
+              <span key={index}>{op} </span>
             ))}
           </p>
         </div>

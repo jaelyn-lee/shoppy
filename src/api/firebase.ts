@@ -78,7 +78,8 @@ export async function getAllProducts() {
   })
 }
 
-export async function addItemToCart(product: Product, userId: string) {
+//CART
+export async function addProductToCart(product: Product, userId: string) {
   const newItemRef = ref(db, `cart/${userId}`)
   return push(newItemRef, {
     ...product,
@@ -86,4 +87,15 @@ export async function addItemToCart(product: Product, userId: string) {
   })
     .then(() => console.log('Item has been added successfully! 🎉'))
     .catch(console.error)
+}
+
+export async function getProductByUserId(userId: string) {
+  return get(ref(db, `cart/${userId}`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      return Object.values(snapshot.val())
+    } else {
+      console.log('[Firebase error]: Data is not received.')
+      return []
+    }
+  })
 }

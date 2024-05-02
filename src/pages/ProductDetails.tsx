@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Button from '../ui/Button'
-import { addItemToCart } from '../api/firebase'
+import { addProductToCart } from '../api/firebase'
 import { useAuthContext } from '../components/context/AuthContext'
 
 export default function ProductDetails() {
@@ -27,7 +27,7 @@ export default function ProductDetails() {
     setSelectedProduct({ ...product, options: e.target.value })
   }
   const handleClick = () => {
-    addItemToCart(selectedProduct, userId).then(() => {
+    addProductToCart(selectedProduct, userId).then(() => {
       setSuccess('✅ Item added to cart!')
       setTimeout(() => {
         setSuccess(null)
