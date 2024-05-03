@@ -78,7 +78,8 @@ export async function getAllProducts() {
   })
 }
 
-//CART
+//CART FUNC
+//Add products to shopping cart
 export async function addProductToCart(product: Product, userId: string) {
   const newItemRef = ref(db, `cart/${userId}`)
   return push(newItemRef, {
@@ -89,6 +90,7 @@ export async function addProductToCart(product: Product, userId: string) {
     .catch(console.error)
 }
 
+//Get products by userId
 export async function getProductByUserId(userId: string) {
   return get(ref(db, `cart/${userId}`)).then((snapshot) => {
     if (snapshot.exists()) {
@@ -98,4 +100,23 @@ export async function getProductByUserId(userId: string) {
       return []
     }
   })
+}
+
+//Delete product by productId
+export async function deleteProductByProductId(
+  userId: string,
+  productId: string
+) {
+  return get(
+    ref(db, `cart/${userId}`).then((snapshot) => {
+      if (snapshot.exist()) {
+        return Object.values(snapshot.val().remove(productId))
+      } else {
+        console.log(
+          '[Firebase error]: Cannot find the item that matches the product ID.'
+        )
+        return []
+      }
+    })
+  )
 }
