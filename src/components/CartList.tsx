@@ -5,8 +5,8 @@ import { CiSquarePlus, CiSquareMinus } from 'react-icons/ci'
 import { FaPlus, FaEquals } from 'react-icons/fa'
 import Button from '../ui/Button'
 import { useNavigate } from 'react-router-dom'
-import { emptyCart } from '../api/firebase'
-import { useAuthContext } from './context/AuthContext'
+import { deleteProductByProductId, emptyCart } from '../api/firebase'
+import { useAuthContext } from '../context/AuthContext'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function CartList(selectedProducts: any) {
@@ -15,7 +15,8 @@ export default function CartList(selectedProducts: any) {
   const [total, setTotal] = useState(0)
   const [totalPayment, setTotalPayment] = useState(0)
   const navigate = useNavigate()
-  const { user } = useAuthContext()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { uid }: any = useAuthContext()
 
   const handleIncrement = (productId: string) => {
     setItemCounts((prevCounts) => ({
@@ -33,7 +34,7 @@ export default function CartList(selectedProducts: any) {
 
   //TO DO: Enable Delete button so that products can be deleted from cart.
   const handleDelete = () => {
-    // deleteProductByProductId(userId, products.Id)
+    deleteProductByProductId(uid, products.Id)
     alert('Item has been deleted from the cart.')
   }
 
@@ -49,7 +50,7 @@ export default function CartList(selectedProducts: any) {
     if (products.length > 0) {
       setTotalPayment(total + 7)
     }
-  }, [total])
+  }, [products.length, total])
 
   return (
     <div>
@@ -78,7 +79,7 @@ export default function CartList(selectedProducts: any) {
               >
                 <CiSquareMinus />
               </button>
-              <p className="text-lg">{itemCounts[product.id] || 1}</p>
+              <p className="text-lg">{product.quantity}</p>
               <button
                 onClick={() => handleIncrement(product.id)}
                 className="text-lg"
@@ -122,7 +123,7 @@ export default function CartList(selectedProducts: any) {
           onClick={() => {
             alert('Order has been placed.')
             navigate('/')
-            emptyCart(user.uid)
+            emptyCart(uid)
           }}
         />
       </div>

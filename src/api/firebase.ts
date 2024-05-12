@@ -6,7 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { getDatabase, ref, get, set, push } from 'firebase/database'
+import { getDatabase, ref, get, set, remove } from 'firebase/database'
 import { User } from '../types/user'
 import { Product } from '../types/product'
 import { v4 as uuid } from 'uuid'
@@ -79,27 +79,29 @@ export async function getAllProducts() {
 }
 
 //CART FUNC
-//Add products to shopping cart
-export async function addProductToCart(product: Product, userId: string) {
-  const newItemRef = ref(db, `cart/${userId}`)
-  return push(newItemRef, {
-    ...product,
-    userId,
-  })
-    .then(() => console.log('Item has been added successfully! 🎉'))
-    .catch(console.error)
-}
-
 //Get products by userId
-export async function getProductByUserId(userId: string) {
-  return get(ref(db, `cart/${userId}`)).then((snapshot) => {
+export async function getCartsByUserId(userId: string) {
+  return get(ref(db, `carts/${userId}`)).then((snapshot) => {
     if (snapshot.exists()) {
-      return Object.values(snapshot.val())
+      const items: Product = snapshot.val() || {}
+      console.log(items)
+
+      return Object.values(items)
     } else {
       console.log('[Firebase error]: Data is not received.')
-      return []
+      return {}
     }
   })
+}
+
+//Add or update products to shopping cart
+export async function addOrUpdateProductToCart(
+  product: Product,
+  userId: string
+) {
+  return set(ref(db, `carts/${userId}/${product.id}`), product)
+    .then(() => console.log('Item has been added successfully! 🎉'))
+    .catch(console.error)
 }
 
 //Delete product by productId
@@ -107,21 +109,10 @@ export async function deleteProductByProductId(
   userId: string,
   productId: string
 ) {
-  return get(
-    ref(db, `cart/${userId}`).then((snapshot) => {
-      if (snapshot.exist()) {
-        return Object.values(snapshot.val().remove(productId))
-      } else {
-        console.log(
-          '[Firebase error]: Cannot find the item that matches the product ID.'
-        )
-        return []
-      }
-    })
-  )
+  return remove(ref(db, `carts/${userId}/${productId}`)).catch(console.error)
 }
 
 //Empty cart after order placed
 export async function emptyCart(userId: string) {
-  return set(ref(db, `cart/${userId}`), null).catch(console.error)
+  return set(ref(db, `carts/${userId}`), null).catch(console.error)
 }

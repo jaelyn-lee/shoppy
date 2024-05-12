@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import { BsBagHeart } from 'react-icons/bs'
 import Button from '../ui/Button'
-import { useAuthContext } from './context/AuthContext'
+import { useAuthContext } from '../context/AuthContext'
+import CartStatus from './ui/CartStatus'
 
 export default function NavBar() {
-  const { user, login, logout } = useAuthContext()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { user, login, logout }: any = useAuthContext()
   return (
     <header className="flex justify-between border-b border-grey-300 p-2">
       <Link
@@ -17,7 +19,11 @@ export default function NavBar() {
 
       <nav className="flex items-center gap-4">
         <Link to={'/products'}>Products</Link>
-        {user ? <Link to={'/carts'}>Cart</Link> : null}
+        {user ? (
+          <Link to={'/carts'}>
+            <CartStatus />
+          </Link>
+        ) : null}
         {user && user.isAdmin ? <Link to={'/products/new'}>Edit</Link> : null}
         {!user ? (
           <Button onClick={login} text="Login" />
