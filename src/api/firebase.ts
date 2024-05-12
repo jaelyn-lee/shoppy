@@ -120,3 +120,8 @@ export async function deleteProductByProductId(
     })
   )
 }
+
+//Empty cart after order placed
+export async function emptyCart(userId: string) {
+  return set(ref(db, `cart/${userId}`), null).catch(console.error)
+}

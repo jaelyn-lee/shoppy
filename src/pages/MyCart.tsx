@@ -18,16 +18,11 @@ export default function MyCart() {
   if (isLoading) return <p>...loading</p>
   if (error) return <p>Error: {error.message}</p>
 
+  console.log(selectedProducts)
+
   return (
     <>
       <CartList products={selectedProducts} />
-      <div className="flex gap-2">
-        <p>Total item price</p>
-        <p>+</p>
-        <p>Shipping fee</p>
-        <p>=</p>
-        <p>Total Payment price</p>
-      </div>
     </>
   )
 }
