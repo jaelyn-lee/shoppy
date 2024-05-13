@@ -1,18 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
-import { getAllProducts } from '../api/firebase'
 import { Product } from '../types/product'
 import ProductCard from './ui/ProductCard'
+import useProducts from '../hooks/useProducts'
 
 export default function ProductsList() {
   const {
-    isLoading,
-    error,
-    data: products,
-  } = useQuery<Product[]>({
-    queryKey: ['products'],
-    queryFn: getAllProducts,
-    staleTime: 1000 * 60 * 1,
-  })
+    productsQuery: { data: products, isLoading, error },
+  } = useProducts()
 
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>

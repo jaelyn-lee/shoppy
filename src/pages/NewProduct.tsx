@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Product } from '../types/product'
 import Button from '../ui/Button'
-import { addNewProduct } from '../api/firebase'
 import { uploadImage } from '../api/cloudinary'
+import useProducts from '../hooks/useProducts'
 
 export default function NewProduct() {
   const initialProduct = {
@@ -18,6 +18,7 @@ export default function NewProduct() {
   const [file, setFile] = useState<object | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [success, setSuccess] = useState<string | null>(null)
+  const { addProduct } = useProducts()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -25,15 +26,20 @@ export default function NewProduct() {
     setIsUploading(true)
     //Upload product image to Cloudinary and get URL
     uploadImage(file)
-      .then((url) => {
+      .then((imageUrl) => {
         //Add new product to firebase
-        addNewProduct(product, url).then(() => {
-          //Show success message for 4 seconds
-          setSuccess('New product added successfully.')
-          setTimeout(() => {
-            setSuccess(null)
-          }, 4000)
-        })
+        addProduct.mutate(
+          { product, imageUrl },
+          {
+            onSuccess: () => {
+              //Show success message for 4 seconds
+              setSuccess('New product added successfully.')
+              setTimeout(() => {
+                setSuccess(null)
+              }, 4000)
+            },
+          }
+        )
       })
       .finally(() => {
         setIsUploading(false)
