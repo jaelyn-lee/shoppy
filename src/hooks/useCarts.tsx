@@ -3,6 +3,7 @@ import {
   deleteProductByProductId,
   getCartsByUserId,
   addOrUpdateProductToCart as modifyCart,
+  emptyCart as RemoveAllFromCart,
 } from '../api/firebase'
 import { Product, SelectedProduct } from '../types/product'
 import { useAuthContext } from '../context/AuthContext'
@@ -30,5 +31,12 @@ export default function useCarts() {
       queryClient.invalidateQueries(['cart', uid])
     },
   })
-  return { cartsQuery, addOrUpdateProductToCart, removeItem }
+
+  const emptyCart = useMutation({
+    mutationFn: () => RemoveAllFromCart(uid),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['cart', uid])
+    },
+  })
+  return { cartsQuery, addOrUpdateProductToCart, removeItem, emptyCart }
 }

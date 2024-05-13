@@ -12,9 +12,9 @@ export default function CartStatus() {
       {error && <p>Error</p>}
       <div className="relative">
         <IoCartOutline className="text-4xl" />
-        {data && (
+        {data && data?.length > 0 && (
           <p className="w-6 h-6 text-center bg-main text-white rounded-full absolute -top-2 -right-2">
-            {data.length}
+            {data?.length}
           </p>
         )}
       </div>
