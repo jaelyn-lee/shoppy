@@ -1,36 +1,33 @@
 import { CiSquareMinus, CiSquarePlus } from 'react-icons/ci'
-import {
-  addOrUpdateProductToCart,
-  deleteProductByProductId,
-} from '../api/firebase'
 import { SelectedProduct } from '../types/product'
 import { IoTrashBinOutline } from 'react-icons/io5'
+import useCarts from '../hooks/useCarts'
 
 type CartItem = {
   product: SelectedProduct
-  uid: string
 }
 const ICON_CLASS =
   'text-2xl transition-all cursor-pointer hover:text-main hover:scale-105 mx-1'
 
-export default function CartProduct({ product, uid }: CartItem) {
+export default function CartProduct({ product }: CartItem) {
+  const { addOrUpdateProductToCart, removeItem } = useCarts()
   const handleIncrement = () => {
-    addOrUpdateProductToCart(
-      { ...product, quantity: product.quantity + 1 },
-      uid
-    )
+    addOrUpdateProductToCart.mutate({
+      ...product,
+      quantity: product.quantity + 1,
+    })
   }
 
   const handleDecrement = () => {
     if (product.quantity < 2) return
-    addOrUpdateProductToCart(
-      { ...product, quantity: product.quantity - 1 },
-      uid
-    )
+    addOrUpdateProductToCart.mutate({
+      ...product,
+      quantity: product.quantity - 1,
+    })
   }
 
   const handleDelete = () => {
-    deleteProductByProductId(uid, product.id)
+    removeItem.mutate(product.id)
     alert('Item has been deleted from the cart.')
   }
 

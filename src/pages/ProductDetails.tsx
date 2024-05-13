@@ -1,37 +1,31 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Button from '../ui/Button'
-import { addOrUpdateProductToCart } from '../api/firebase'
-import { useAuthContext } from '../context/AuthContext'
+import useCarts from '../hooks/useCarts'
 
 export default function ProductDetails() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { uid }: any = useAuthContext()
+  const { addOrUpdateProductToCart } = useCarts()
 
   const location = useLocation()
   const product = location.state?.product
   const [selected, setSelected] = useState(
     product.options && product.options[0]
   )
-  const [selectedProduct, setSelectedProduct] = useState({
-    ...product,
-    options: selected,
-    quantity: 1,
-  })
   const [success, setSuccess] = useState<string | null>(null)
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault()
     setSelected(e.target.value)
-    setSelectedProduct({ ...product, options: e.target.value })
   }
   const handleClick = () => {
-    addOrUpdateProductToCart(selectedProduct, uid).then(() => {
-      setSuccess('✅ Item added to cart!')
-      setTimeout(() => {
-        setSuccess(null)
-      }, 4000)
+    const selectedProduct = { ...product, option: selected, quantity: 1 }
+    addOrUpdateProductToCart.mutate(selectedProduct, {
+      onSuccess: () => {
+        setSuccess('✅ Item added to cart!')
+        setTimeout(() => {
+          setSuccess(null)
+        }, 4000)
+      },
     })
-    console.log('add to cart')
   }
   return (
     <>

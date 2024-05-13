@@ -35,7 +35,7 @@ export default function CartList(selectedProducts: any) {
           <ul>
             {products &&
               products.map((product: SelectedProduct) => (
-                <CartProduct uid={uid} product={product} key={product.id} />
+                <CartProduct product={product} key={product.id} />
               ))}
           </ul>
           <div className="flex gap-10 items-center justify-center">
