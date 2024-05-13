@@ -8,7 +8,8 @@ export const cld = new Cloudinary({
   },
 })
 
-export async function uploadImage(file: object | null) {
+export async function uploadImage(file: File | null) {
+  if (!file) return
   const data = new FormData()
   data.append('file', file)
   data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_PRESET)
