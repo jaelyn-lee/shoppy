@@ -41,14 +41,14 @@ export default function CartList(selectedProducts: any) {
           <div className="flex gap-10 items-center justify-center">
             <PriceCard text={'Total item price'} price={totalPrice} />
             <p>
-              <FaPlus />
+              <FaPlus className="shrink-0" />
             </p>
             <PriceCard
               text={'Shipping fee'}
               price={products.length > 0 ? shippingFee : 'NZ$ 0'}
             />
             <p>
-              <FaEquals />
+              <FaEquals className="shrink-0" />
             </p>
             <PriceCard
               text={'Total Payment price'}

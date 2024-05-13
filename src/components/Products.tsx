@@ -8,7 +8,11 @@ export default function ProductsList() {
     isLoading,
     error,
     data: products,
-  } = useQuery<Product[]>({ queryKey: ['products'], queryFn: getAllProducts })
+  } = useQuery<Product[]>({
+    queryKey: ['products'],
+    queryFn: getAllProducts,
+    staleTime: 1000 * 60 * 1,
+  })
 
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>

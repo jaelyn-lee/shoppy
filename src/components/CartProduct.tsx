@@ -10,6 +10,8 @@ type CartItem = {
   product: SelectedProduct
   uid: string
 }
+const ICON_CLASS =
+  'text-2xl transition-all cursor-pointer hover:text-main hover:scale-105 mx-1'
 
 export default function CartProduct({ product, uid }: CartItem) {
   const handleIncrement = () => {
@@ -49,14 +51,14 @@ export default function CartProduct({ product, uid }: CartItem) {
         </li>
         <div className="flex items-center">
           <button onClick={() => handleDecrement()} className="text-lg">
-            <CiSquareMinus />
+            <CiSquareMinus className={ICON_CLASS} />
           </button>
           <p className="text-lg">{product.quantity}</p>
           <button onClick={() => handleIncrement()} className="text-lg">
-            <CiSquarePlus />
+            <CiSquarePlus className={ICON_CLASS} />
           </button>
           <button onClick={handleDelete} className="text-lg ml-1">
-            <IoTrashBinOutline />
+            <IoTrashBinOutline className={ICON_CLASS} />
           </button>
         </div>
       </div>
