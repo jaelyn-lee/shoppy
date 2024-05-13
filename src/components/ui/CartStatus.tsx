@@ -2,7 +2,7 @@ import { IoCartOutline } from 'react-icons/io5'
 import { useAuthContext } from '../../context/AuthContext'
 import { getCartsByUserId } from '../../api/firebase'
 import { useQuery } from '@tanstack/react-query'
-import { CartItem, SelectedProduct } from '../../types/product'
+import { SelectedProduct } from '../../types/product'
 
 export default function CartStatus() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

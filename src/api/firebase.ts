@@ -8,7 +8,7 @@ import {
 } from 'firebase/auth'
 import { getDatabase, ref, get, set, remove } from 'firebase/database'
 import { User } from '../types/user'
-import { Product } from '../types/product'
+import { Product, SelectedProduct } from '../types/product'
 import { v4 as uuid } from 'uuid'
 
 const firebaseConfig = {
@@ -57,7 +57,7 @@ export async function addNewProduct(product: Product, imageUrl: string) {
   return set(newProductRef, {
     ...product,
     id,
-    price: product.price,
+    price: parseInt(product.price),
     image: imageUrl,
     options: product.options.split(','),
   })
@@ -83,9 +83,7 @@ export async function getAllProducts() {
 export async function getCartsByUserId(userId: string) {
   return get(ref(db, `carts/${userId}`)).then((snapshot) => {
     if (snapshot.exists()) {
-      const items: Product = snapshot.val() || {}
-      console.log(items)
-
+      const items: SelectedProduct = snapshot.val() || {}
       return Object.values(items)
     } else {
       console.log('[Firebase error]: Data is not received.')
@@ -96,7 +94,7 @@ export async function getCartsByUserId(userId: string) {
 
 //Add or update products to shopping cart
 export async function addOrUpdateProductToCart(
-  product: Product,
+  product: SelectedProduct,
   userId: string
 ) {
   return set(ref(db, `carts/${userId}/${product.id}`), product)
