@@ -17,7 +17,7 @@ export default function ProductDetails() {
     setSelected(e.target.value)
   }
   const handleClick = () => {
-    const selectedProduct = { ...product, option: selected, quantity: 1 }
+    const selectedProduct = { ...product, options: selected, quantity: 1 }
     addOrUpdateProductToCart.mutate(selectedProduct, {
       onSuccess: () => {
         setSuccess('✅ Item added to cart!')
