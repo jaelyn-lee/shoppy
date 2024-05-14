@@ -57,7 +57,7 @@ export async function addNewProduct(product: Product, imageUrl: string) {
   return set(newProductRef, {
     ...product,
     id,
-    price: parseInt(product.price),
+    price: product.price,
     image: imageUrl,
     options: product.options.split(','),
   })

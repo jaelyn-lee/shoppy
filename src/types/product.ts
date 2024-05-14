@@ -4,7 +4,7 @@ export type Product = {
   id: string
   productName: string
   image: string
-  price: string
+  price: number
   category: string
   productDescription: string
   options: string[]
@@ -15,7 +15,7 @@ export type SelectedProduct = {
   id: string
   productName: string
   image: string
-  price: string | number
+  price: number
   category: string
   productDescription: string
   options: string

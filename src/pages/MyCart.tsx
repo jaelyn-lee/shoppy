@@ -18,12 +18,18 @@ export default function MyCart() {
   const totalPrice =
     products &&
     products.reduce(
-      (prev: number, current: { price: string; quantity: number }) =>
-        prev + parseInt(current.price) * current.quantity
+      (prev: number, current: { price: number; quantity: number }) => {
+        console.log('Prev: ', prev, 'Current: ', current)
+        console.log(current.price, typeof current.price)
+        console.log(current.quantity, typeof current.quantity)
+
+        prev + current.price * current.quantity
+      }
     )
 
   if (isLoading) return <p>...loading</p>
   if (error) return <p>Error: {error.message}</p>
+  console.log(totalPrice)
 
   return (
     <div>

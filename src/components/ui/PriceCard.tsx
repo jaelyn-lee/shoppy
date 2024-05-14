@@ -1,6 +1,6 @@
 interface PriceCard {
   text: string
-  price: string | number
+  price: number
 }
 
 export default function PriceCard({ text, price }: PriceCard) {
