@@ -2,6 +2,8 @@ import { CiSquareMinus, CiSquarePlus } from 'react-icons/ci'
 import { SelectedProduct } from '../types/product'
 import { IoTrashBinOutline } from 'react-icons/io5'
 import useCarts from '../hooks/useCarts'
+import { deleteProductByProductId } from '../api/firebase'
+import { useAuthContext } from '../context/AuthContext'
 
 type CartItem = {
   product: SelectedProduct
@@ -11,6 +13,8 @@ const ICON_CLASS =
 
 export default function CartProduct({ product }: CartItem) {
   const { addOrUpdateProductToCart, removeItem } = useCarts()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { uid }: any = useAuthContext()
   const handleIncrement = () => {
     addOrUpdateProductToCart.mutate({
       ...product,
@@ -27,7 +31,9 @@ export default function CartProduct({ product }: CartItem) {
   }
 
   const handleDelete = () => {
-    removeItem.mutate(product.id)
+    // removeItem.mutate(product.id)
+    // alert('Item has been deleted from the cart.')
+    deleteProductByProductId(product.id, uid)
     alert('Item has been deleted from the cart.')
   }
 

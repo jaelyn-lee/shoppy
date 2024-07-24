@@ -23,7 +23,7 @@ export default function MyCart() {
         console.log(current.price, typeof current.price)
         console.log(current.quantity, typeof current.quantity)
 
-        prev + current.price * current.quantity
+        return prev + current.price * current.quantity
       }
     )
 
